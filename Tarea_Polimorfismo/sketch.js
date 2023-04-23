@@ -1,122 +1,98 @@
-class Figura 
+class Figura
 {
-  constructor(x,y, alto, ancho, vx, vy) 
-  {
-    this.posicion=createVector(x,y);
-    this.alto = alto;
-    this.ancho = ancho;
-    this.fillred=0;
-    this.fillgreen=255;
-    this.fillblue=154;
-    this.velocidad= createVector(vx,vy);
-  }
-  update()
-  {
-    //derecha
-    if(this.posicion.x + this.ancho >= 450)
-       {
-         this.velocidad.x=this.velocidad.x * -1
-         this.velocidad.y=this.velocidad.y * 1;
-       }
-    //izquierda
-    if(this.posicion.x + this.ancho <= this.ancho)
-       {
-         this.velocidad.x=this.velocidad.x * -1
-         this.velocidad.y=this.velocidad.y * 1;
-       }
-    //arriba
-    if(this.posicion.y + this.alto <= this.alto)
-       {
-         this.velocidad.x=this.velocidad.x * 1
-         this.velocidad.y=this.velocidad.y * -1;
-       }
-    //abajo
-    if(this.posicion.y + this.alto >= 550)
-       {
-         this.velocidad.x=this.velocidad.x * 1
-         this.velocidad.y=this.velocidad.y * -1;
-       }
-    this.posicion.add(this.velocidad);
-  }
+    constructor(x,y,alto,ancho)
+    {
+      this.x=x;
+      this.y=y;
+      this.alto=alto;
+      this.ancho=ancho;
+    }
 }
 
-class Rectangulo extends Figura
+class Cuadro extends Figura
 {
-  constructor(x,y, alto, ancho, vx, vy) 
-  {
-    super (x,y, alto, ancho, vx, vy);
-  }
-  draw()
-  {
-    fill(255,100,122);
-    rect(this.posicion.x,this.posicion.y,this.alto,this.ancho);
-    stroke("Black");
-    strokeWeight(3);
-  }
+    constructor(x,y,alto,ancho)
+    {
+      super(x,y,alto,ancho);
+    }
+    draw()
+    {
+      rect(this.x,this.y,this.alto,this.ancho);
+      //fill("black");
+    }
 }
 
 class Elipse extends Figura
 {
-  constructor(x,y, alto, ancho, vx, vy) 
-  {
-    super (x,y, alto, ancho, vx, vy);
-  }
-  draw()
-  {
-    fill(0,255,154);
-    ellipse(this.posicion.x,this.posicion.y,this.alto,this.ancho);
-    stroke("Black");
-    strokeWeight(3);
-  }
+    constructor(x,y,alto,ancho)
+    {
+      super(x,y,alto,ancho);
+    }
+    draw()
+    {
+      ellipse(this.x,this.y,this.alto,this.ancho);
+      fill("red");
+    }
 }
 
-var figuras=[];
-var dibujando;
-var btnCirculo=null;
-var btnRectangulo=null;
+function mousePressed()
+{
+  let balitas=new Cuadro(mouseX,600,10,10);
+  Balas.push(balitas);
+  //crea enemigos cada pressed del mouse, por lo tanto nunca dejan de aparecer
+  let enemigos=new Cuadro(random(0,777),-5,23,23);
+  Enemigos.push(enemigos);
+  
+}
+
+
+var mouseX=this.x;
+var Balas=[];
+var Enemigos=[];
 function setup() 
 {
-  createCanvas(500, 500);
-  
-  btnCirculo= createButton('Circulo')
-  btnCirculo.position(10,0);
-  btnCirculo.mousePressed(changeCirculo);
-  
-  btnRectangulo = createButton('Rectangulo')
-  btnRectangulo.position(80,0);
-  btnRectangulo.mousePressed(changeRectangulo);
-}
-
-function changeCirculo()
-{
-  btnCirculo.style('background-color','#cccccc');
-  btnRectangulo.style('background-color','#FFFFFF');
-  dibujando='circulo'
-}
-
-function changeRectangulo()
-{
-  btnRectangulo.style('background-color','#cccccc');
-  btnCirculo.style('background-color','#FFFFFF');
-  dibujando='rectangulo'
+  createCanvas(800, 700);
+  //con el for en el setup crea enemigos de un jalon
+  //for(let i=0; i<10; i++){
+  //let enemigos=new Cuadro(random(0,780),-5,20,20);
+  //Enemigos.push(enemigos);}
 }
 
 function draw() 
 {
-  background(1000);
-  figuras.forEach((fig) =>{fig.draw();fig.update();});
-}
-
-function mouseClicked() 
-{
-  //se crea un objeto segun la opcion actual
-  if (mouseY>20)
+  background(1000)
+  let circulo=new Elipse(mouseX,666,65,65);
+  circulo.draw();
+  //para dibujar balitas
+  for(let balitas of Balas)
     {
-     if (dibujando=='circulo')
-  figuras.push(new Elipse(mouseX, mouseY,100,50,2,2));
-  else if (dibujando=='rectangulo')
-  figuras.push(new Rectangulo(mouseX, mouseY,100,50,2,2)); 
+      balitas.y-=8;
+      balitas.draw();
     }
-  // prevent default
-  return false;
+  //for para dibujar enemigos
+  for(let enemigos of Enemigos)
+    {
+      enemigos.y+=1.3;
+      enemigos.draw();
+    }
+  
+  for(enemigos of Enemigos){
+   for(balitas of Balas){
+    if (dist(enemigos.x,enemigos.y,balitas.x,balitas.y)<15){
+      Enemigos.splice(Enemigos.indexOf(enemigos),1);
+      Balas.splice(Balas.indexOf(balitas),1);
+    }
+    }
+    }
+  
+  for(enemigos of Enemigos){
+  if (enemigos.y>height)
+  {
+    textSize(40)
+    textStyle(BOLD)
+    fill(0,153,0)
+  text("GAME OVER",300,height/2);
+    noLoop();
+  }
+  }
 }
