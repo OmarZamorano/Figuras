@@ -18,7 +18,6 @@ class Cuadro extends Figura
     draw()
     {
       rect(this.x,this.y,this.alto,this.ancho);
-      //fill("black");
     }
 }
 
@@ -30,8 +29,8 @@ class Elipse extends Figura
     }
     draw()
     {
+      fill(153,0,0);
       ellipse(this.x,this.y,this.alto,this.ancho);
-      fill("red");
     }
 }
 
@@ -66,6 +65,7 @@ function draw()
   //para dibujar balitas
   for(let balitas of Balas)
     {
+      fill(255,255,0);
       balitas.y-=8;
       balitas.draw();
     }
@@ -73,6 +73,7 @@ function draw()
   for(let enemigos of Enemigos)
     {
       enemigos.y+=1.3;
+      fill(0,0,0);
       enemigos.draw();
     }
   
