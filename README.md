@@ -1,2 +1,2 @@
 # Figuras
-Ejemplo de p5js
+Tarea en la carpeta de Tarea_Polimorfismo
