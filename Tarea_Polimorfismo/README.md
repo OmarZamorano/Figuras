@@ -34,3 +34,8 @@ Después se hace lo mismo pero con el arreglo Balas para eliminar la bala que ch
 Por último se colocó un un if dentro de un for para condicionar que si los enemigos pasan del alto de la pantalla, se detenga el programa,todo esto con la función noLoop().
 
 ### NOTA: el cilco for tambien sirve para escribir código de variables de un arreglo que no existen dentro del draw pero sí en funciones externas. En mi caso realice este último for ya que los objetos enemigos estan declarados en la función mousePressed y no en el draw().
+
+
+## UML
+![Tarea_Polimorfismo drawio](https://user-images.githubusercontent.com/126824615/234129949-4a74288c-6f2c-47a0-8f62-39844ad61031.png)
+
